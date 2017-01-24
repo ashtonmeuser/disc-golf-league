@@ -1,0 +1,6 @@
+{
+  "name": "disc-golf-league",
+  "description": "A platform for tracking disc golf standings.",
+  "repository": "https://github.com/ashtonmeuser/disc-golf-league",
+  "image": "heroku/nodejs"
+}
