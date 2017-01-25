@@ -1,12 +1,12 @@
 /* Layout */
 body {
   font-family: Courier New;
-  font-size: 16px;
+  font-size: 1em;
   padding: 0;
   margin: 0;
   min-height: 100vh;
   text-align: center;
-  background-color: whitesmoke;
+  background-color: #ddd;
 }
 main {
   box-sizing: border-box;
@@ -19,128 +19,93 @@ main {
   -webkit-justify-content: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 20px;
+  padding: 10px;
 }
-p {
-  margin: 0;
+section {
+  -webkit-border-radius: 10;
+  -moz-border-radius: 10;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
 }
 .row {
   display: flex;
   flex-direction: row;
   justify-content: center;
   width: 100%;
-  max-width: 500px;
-  padding: 5px 0;
 }
-.column {
-  flex: 1 0 0;
-  -webkit-flex: 1 0 0;
-}
-.column.left {
-  max-width: 70px;
-  text-align: right;
-}
-.column.right {
-  text-align: left;
-  padding-left: 10px;
+.center-column {
+  flex-grow: 1;
 }
 /* End layout */
 
+/* Main */
+section.summary {
+  background-color: white;
+  margin-bottom: 30px;
+}
+section.error {}
+section.post {
+  margin-bottom: 30px;
+}
+section.standings {
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.player {
+  background-color: white;
+}
+.division-0 {
+  background-color: #e5b31b;
+}
+.division-1 {
+  background-color: #a9a9a9;
+}
+.division-2 {
+  background-color: #af6528;
+}
+.division-3 {
+  background-color: #6bbdd6;
+}
+/* End partials */
+
 /* Buttons, links */
-.button-title {
-  font-size: 1.5em;
-}
-.button-title {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
 .button {
-  -webkit-border-radius: 10;
-  -moz-border-radius: 10;
-  border-radius: 10px;
-  color: white;
-  padding: 20px;
-  text-decoration: none;
-  display: block;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  width: 100%;
-  min-width: 100px;
-  margin: 20px 0;
-}
-.button.primary {
-  background: #5F9EA0;
-}
-.button.secondary {
-  background: #5F9EA0;
-}
-.button.disabled {
-  background: #BBB;
-}
-.button-subtitle:after {
-  content: "long-press to save"
-}
-.link {
-  color: black;
-  text-decoration: underline;
+  background-color: #5ec19d;
 }
 @media (any-hover: hover) {
   .button:hover {
-    text-decoration: none;
-  }
-  .button.primary:hover {
-    background: #7EB1B3;
-  }
-  .button.secondary:hover {
-    background: #7EB1B3;
-  }
-  .button.disabled:hover {
-    background: #BBB;
-    cursor: not-allowed;
-  }
-  .button-subtitle:after {
-    content: "drag to bookmarks to save"
+    background-color: #62cea7;
   }
 }
 /* End buttons, links */
 
 /* Input */
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 input {
   text-align: center;
   font-size: 1em;
   -webkit-border-radius: 10;
+  -webkit-appearance: none;
   -moz-border-radius: 10;
   border-radius: 10px;
   border: 0;
   width: 100%;
   min-width: 100px;
   padding: 10px;
-  margin-top: 20px;
+}
+input[disabled] {
+  display: none;
+}
+input.button {
+  margin-top: 10px;
 }
 /* End input */
-
-/* Header */
-header {
-  margin-bottom: 20px;
-}
-header h1 {
-  font-size: 4em;
-  line-height: 0.8;
-  font-weight: bold;
-  margin: 0;
-}
-header h2 {
-  font-weight: normal;
-  font-size: 1.5em;
-  margin: 0;
-}
-header a {
-  text-decoration: none;
-  color: inherit;
-}
-/* End header */
 
 /* Error */
 .error {
@@ -155,9 +120,3 @@ header a {
   background: lightcoral;
 }
 /* End error */
-
-/* Code */
-span.code {
-  background-color: #DDD;
-}
-/* End code */

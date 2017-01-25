@@ -4,16 +4,13 @@
   <% include ../partials/head %>
 </head>
 <body>
-  <main class="container">
+  <main>
 
-    me: <%- user.username %>
+    <% include ../partials/summary %>
 
-    <% Object.keys(players).forEach(function(division) { %>
-      div: <%- division %>
-      players: <% players[division].forEach(function(player) { %>
-        <%- player.username %>
-      <% }); %>
-    <% }); %>
+    <% include ../partials/post %>
+
+    <% include ../partials/standings %>
 
   </main>
 </body>

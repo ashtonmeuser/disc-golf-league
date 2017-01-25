@@ -2,7 +2,8 @@ var express = require('express');
 var Cookies = require('cookies');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-var groupArray = require('group-array');
+// var groupArray = require('group-array');
+var user = require('./controller/user');
 var User = require('./model/user');
 var app = express();
 app.set('view engine', 'ejs');
@@ -14,62 +15,58 @@ mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/discgolfleague');
 
 // Login
-app.get('/*', function(req, res, next) {
-  console.log('get');
+
+app.use(user.authenticate);
+
+app.post('/login', function(req, res, next) {
   var cookies = new Cookies(req, res);
-  var cookie = cookies.get('discgolfleague');
-
-  try{
-    user = JSON.parse(cookie);
-  }catch(err){
-    return res.render('pages/login');
-  }
-  if(user.username === undefined || user.secret === undefined) return res.render('pages/login');
-
-  User.findOne({username: user.username, secret: user.secret}, 'username division position score hasPosted', function(err, user) {
-    if(err) return next({status: 500, message: 'Unable to access database.'});
-    if(user === null){
-      return res.render('pages/login');
-    }else{
-      req.user = user;
-      return next();
-    }
-  });
-});
-
-app.post('/', function(req, res, next) {
-  var cookies = new Cookies(req, res);
-  var username = req.body.username;
+  var name = req.body.name;
   var secret = req.body.secret;
-
-  cookies.set('discgolfleague', JSON.stringify({username: username, secret: secret}));
-  return res.redirect('/');
+  var expiryDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1));
+  cookies.set('discgolfleague', JSON.stringify({name: name, secret: secret}), {overwrite: true, expires: expiryDate});
+  res.redirect('/');
 });
 
-app.get('/', function(req, res, next) {
-  console.log(req.user);
-  User.find({}, 'username division', function(err, users) {
-    if(err) return next({status: 500, message: 'Unable to access database.'});
-    var players = groupArray(users, 'division');
-    res.render('pages/index', {user: req.user, players: players});
-  });
+// Admin
+
+app.post('/place', function(req, res, next) {
+  if(!req.user.isAdmin) return next({status: 401, message: 'Admin access only.'});
+  user.place();
+  res.json({success: true});
 });
 
 app.post('/user', function(req, res, next) {
-  var user = new User({
-    username: req.body.username,
-    secret: req.body.secret
+  if(!req.user.isAdmin) return next({status: 401, message: 'Admin access only.'});
+  user.create(req.body.name, req.body.secret, function(err) {
+    if(err) return next({status: 500, message: 'Unable to access database.'});
+    res.json({success: true});
   });
-  user.save(function(err) {
+});
+
+// Main
+
+app.get('/', function(req, res, next) {
+  // return next({status: 500, message: 'Unable to access database.'}); //DEBUG: Test errors
+  user.divisions('position', function(err, players) {
+    if(err) return next(err);
+    res.render('pages/index', {user: req.user, players: players, divisions: ['Gold','Silver','Bronze','Unranked']});
+  });
+});
+
+app.post('/post', function(req, res, next) {
+  var score = req.body.score;
+  user.post(req.user, score, function(err) {
+    if(err) return next(err);
     res.redirect('/');
   });
 });
 
 // Error
+
 app.use(function(err, req, res, next) {
-  if(res.headersSent) return next(err);
+  if(res.headersSent || err.status===undefined || err.message===undefined) return next(err);
   console.log(err.message);
-  res.status(err.status).json({error: err.message});
+  res.status(err.status).render('pages/error', {error: err.message});
 });
 
 app.listen(app.get('port'), function() {
