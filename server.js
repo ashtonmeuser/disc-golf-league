@@ -2,7 +2,6 @@ var express = require('express');
 var Cookies = require('cookies');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-// var groupArray = require('group-array');
 var user = require('./controller/user');
 var User = require('./model/user');
 var app = express();
@@ -31,14 +30,17 @@ app.post('/login', function(req, res, next) {
 
 app.post('/place', function(req, res, next) {
   if(!req.user.isAdmin) return next({status: 401, message: 'Admin access only.'});
-  user.place();
-  res.json({success: true});
+  if(req.body.password !== process.env.DISCGOLFADMINPASSWORD) return next({status: 401, message: 'Invalid Admin password.'});
+  user.place(function(err){
+    if(err) return next(err);
+    res.redirect('/');
+  });
 });
 
 app.post('/user', function(req, res, next) {
   if(!req.user.isAdmin) return next({status: 401, message: 'Admin access only.'});
   user.create(req.body.name, req.body.secret, function(err) {
-    if(err) return next({status: 500, message: 'Unable to access database.'});
+    if(err) return next(err);
     res.json({success: true});
   });
 });
@@ -46,7 +48,6 @@ app.post('/user', function(req, res, next) {
 // Main
 
 app.get('/', function(req, res, next) {
-  // return next({status: 500, message: 'Unable to access database.'}); //DEBUG: Test errors
   user.divisions('position', function(err, players) {
     if(err) return next(err);
     res.render('pages/index', {user: req.user, players: players, divisions: ['Gold','Silver','Bronze','Unranked']});
@@ -67,6 +68,12 @@ app.use(function(err, req, res, next) {
   if(res.headersSent || err.status===undefined || err.message===undefined) return next(err);
   console.log(err.message);
   res.status(err.status).render('pages/error', {error: err.message});
+});
+
+// Not found
+
+app.use(function (req, res, next) {
+  res.redirect('/');
 });
 
 app.listen(app.get('port'), function() {

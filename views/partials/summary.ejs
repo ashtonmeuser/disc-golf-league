@@ -1,8 +1,8 @@
 <section class="summary">
-  <div class="row">
+  <div class="row name">
     <%- user.name %>
   </div>
   <div class="row">
-    <%- divisions[user.division] %> Division, Tag <%- user.position===undefined ? 'N/A' : '#'+user.position; %>
+    <%- divisions[user.division] %> Division, Tag <%- user.position===undefined ? 'N/A' : '#'+(user.position+1); %>
   </div>
 </section>

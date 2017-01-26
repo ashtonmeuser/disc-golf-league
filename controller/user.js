@@ -59,22 +59,39 @@ function divisions(sort, callback) {
 
 function place(callback) {
   divisions('score', function(err, players) {
+    if(err) return callback(err);
+
+    // Calculate new standings
     Object.keys(players).forEach(function(division) {
       var divisionIndex = Number(division);
-      console.log('div '+division);
+      var nextDivision = String(divisionIndex+1);
+      if(players[nextDivision] === undefined) return;
+      var player = players[division][players[division].length-1];
+      var challenger = players[nextDivision][0];
+
+      if((challenger.score!==null && player.score===null) || challenger.score<player.score){
+        players[division].pop();
+        players[nextDivision].splice(0, 1);
+        players[division].push(challenger);
+        players[nextDivision].unshift(player);
+      }
+    });
+
+    // Reset scores, save players
+    Object.keys(players).forEach(function(division) {
+      var divisionIndex = Number(division);
       players[division].forEach(function(player, playerIndex) {
-        console.log('player '+player.name+' pos '+playerIndex);
-        if(playerIndex===players[division].length-1 && players[divisionIndex+1]){
-          var challenger = players[divisionIndex+1][0];
-          console.log('challenger '+challenger.name);
-          if((challenger.score!==null && player.score===null) || challenger.score < player.score){
-            challenger.division = divisionIndex;
-            player.division = divisionIndex+1;
-            console.log(challenger.name+' beats '+player.name);
-          }
-        }
+        player.division = divisionIndex;
+        player.position = player.division*4+playerIndex;
+        player.score = null;
+        player.hasPosted = false;
+        player.save(function(err) {
+          if(err) return callback({status: 500, message: 'Unable to save score.'});
+        });
       });
     });
+    
+    callback(null);
   });
 }
 

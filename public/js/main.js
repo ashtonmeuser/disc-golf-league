@@ -1,14 +1,24 @@
 onload = function () {
-  var input = document.getElementById('post-score');
-  if(input != null){
-    input.value = '';
-    input.oninput = input_handler;
-    input.onpropertychange = input.oninput;
+  var postInput = document.getElementById('post-score');
+  var placeInput = document.getElementById('place-password');
+  if(postInput != null){
+    postInput.value = '';
+    postInput.oninput = posthandler;
+    postInput.onpropertychange = postInput.oninput;
+  }
+  if(placeInput != null){
+    placeInput.value = '';
+    placeInput.oninput = placehandler;
+    placeInput.onpropertychange = placeInput.oninput;
   }
 };
 
-function input_handler(event){
-  console.log(event.target.value);
-  var valid = event.target.value && Number.isInteger(Number(event.target.value))
+function posthandler(event){
+  var valid = event.target.value && Number.isInteger(Number(event.target.value));
   document.getElementById('post-submit').disabled = !valid;
+}
+
+function placehandler(event){
+  var valid = event.target.value && event.target.value!=='';
+  document.getElementById('place-submit').disabled = !valid;
 }

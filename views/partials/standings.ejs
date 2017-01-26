@@ -1,20 +1,22 @@
 <% Object.keys(players).forEach(function(division) { %>
   <section class="standings division-<%- division %>">
-    <div class="row">
+    <div class="row division">
       <%- divisions[division] %> Division
     </div>
-    <% players[division].forEach(function(player) { %>
-      <div class="row player">
-        <div>
-          <%- player.position %>
+    <div class="players">
+      <% players[division].forEach(function(player) { %>
+        <div class="row player">
+          <div class="side-column left">
+            <%- player.position===null ? 'N/A' : player.position+1 %>
+          </div>
+          <div class="center-column">
+            <%- player.name %>
+          </div>
+          <div class="side-column right">
+            <%- player.score===null ? 'N/A' : player.score===0 ? 'Par' : player.score>0 ? '+'+player.score : player.score %>
+          </div>
         </div>
-        <div class="center-column">
-          <%- player.name %>
-        </div>
-        <div>
-          <%- player.score===null ? 'N/A' : player.score===0 ? 'Par' : player.score>0 ? '+'+player.score : player.score %>
-        </div>
-      </div>
-    <% }); %>
+      <% }); %>
+    </div>
   </section>
 <% }); %>

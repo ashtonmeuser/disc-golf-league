@@ -1,6 +1,6 @@
 /* Layout */
 body {
-  font-family: Courier New;
+  font-family: Tahoma, Geneva, sans-serif;
   font-size: 1em;
   padding: 0;
   margin: 0;
@@ -34,39 +34,58 @@ section {
   justify-content: center;
   width: 100%;
 }
-.center-column {
-  flex-grow: 1;
-}
 /* End layout */
 
 /* Main */
 section.summary {
   background-color: white;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+  padding: 10px;
+  box-sizing: border-box;
 }
-section.error {}
+.name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+section.error {
+  background-color: #ff6b6b;
+  padding: 10px;
+  box-sizing: border-box;
+}
 section.post {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+}
+section.place {
+  margin-top: 40px;
 }
 section.standings {
   margin-bottom: 10px;
   overflow: hidden;
 }
-.player {
+.division {
+  margin: 5px;
+  font-weight: bold;
+}
+.players {
   background-color: white;
+  padding: 5px 10px;
+  box-sizing: border-box;
 }
-.division-0 {
-  background-color: #e5b31b;
+.player {
+  margin: 5px 0;
 }
-.division-1 {
-  background-color: #a9a9a9;
+.side-column {
+  width: 30px;
 }
-.division-2 {
-  background-color: #af6528;
+.side-column.left {text-align: left;}
+.side-column.right {text-align: right;}
+.center-column {
+  flex-grow: 1;
 }
-.division-3 {
-  background-color: #6bbdd6;
-}
+.division-0 {background-color: #e5b31b;}
+.division-1 {background-color: #a9a9a9;}
+.division-2 {background-color: #b1703b;}
+.division-3 {background-color: #6bbdd6;}
 /* End partials */
 
 /* Buttons, links */
@@ -88,6 +107,7 @@ form {
   align-items: center;
 }
 input {
+  font-family: Tahoma, Geneva, sans-serif;
   text-align: center;
   font-size: 1em;
   -webkit-border-radius: 10;
@@ -102,21 +122,7 @@ input {
 input[disabled] {
   display: none;
 }
-input.button {
+input.margin-top {
   margin-top: 10px;
 }
 /* End input */
-
-/* Error */
-.error {
-  -webkit-border-radius: 10;
-  -moz-border-radius: 10;
-  border-radius: 10px;
-  color: white;
-  padding: 20px;
-  width: 100%;
-  margin: 20px 0;
-  min-width: 100px;
-  background: lightcoral;
-}
-/* End error */

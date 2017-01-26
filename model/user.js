@@ -4,8 +4,8 @@ module.exports = mongoose.model('User', new Schema({
   name: {type: String, required: true},
   hasPosted: {type: Boolean, required: true, default: false},
   isAdmin: {type: Boolean, required: true, default: false},
-  score: {type: Number},
+  score: {type: Number, default: null},
   division: {type: Number, min: 0, max: 3, required: true, default: 3},
-  position: {type: Number},
+  position: {type: Number, default: null},
   secret: {type: String, required: true}
 }));
