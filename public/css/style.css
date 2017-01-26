@@ -68,14 +68,14 @@ section.standings {
 }
 .players {
   background-color: white;
-  padding: 5px 10px;
+  padding: 5px 15px;
   box-sizing: border-box;
 }
 .player {
   margin: 5px 0;
 }
 .side-column {
-  width: 30px;
+  width: 50px;
 }
 .side-column.left {text-align: left;}
 .side-column.right {text-align: right;}

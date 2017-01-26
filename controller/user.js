@@ -50,7 +50,7 @@ function divisions(sort, callback) {
   User.find({}, 'name division position score', function(err, users) {
     if(err) return callback({status: 500, message: 'Unable to access database.'});
     users.sort(function(a, b) {
-      return a[sort] - b[sort];
+      return (a[sort]===null && b[sort]!==null) ? 1 : a[sort] - b[sort];
     });
     var players = groupArray(users, 'division');
     callback(null, players);
@@ -90,7 +90,7 @@ function place(callback) {
         });
       });
     });
-    
+
     callback(null);
   });
 }
