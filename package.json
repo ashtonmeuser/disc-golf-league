@@ -1,6 +1,6 @@
 {
   "name": "disc-golf-league",
-  "version": "0.0.0",
+  "version": "0.2",
   "author": "Ashton Meuser",
   "description": "A platform for tracking disc golf standings.",
   "main": "server.js",

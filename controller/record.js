@@ -24,7 +24,7 @@ function setCourseRecord(score, callback) {
 
   Record.findOneAndUpdate(
     {key: 'courseRecord'},
-    {$min: {value: score}},
+    {$min: {value: Number(score)}},
     {upsert: true},
     function(err, record) {
       if(err) return callback({status: 500, message: 'Unable to access database.'});

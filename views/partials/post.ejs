@@ -1,20 +1,20 @@
-<% if(!user.hasPosted) { %>
-  <section class="post">
-    <form id="post-form" action="/post" method="post">
-      <div class="row">
-        <input id="post-score" type="number" name="score" placeholder="Score" autocomplete="off"/>
-      </div>
+<section class="post">
+  <form id="post-form" action="/post" method="post">
+    <div class="row">
+      <input id="post-score" type="number" name="score" placeholder="Score" autocomplete="off"/>
+    </div>
+    <% if(!user.hasPosted) { %>
       <div class="row">
         <input disabled id="post-competitive" class="checkbox-custom" name="competitive" type="checkbox">
         <label for="post-competitive" class="checkbox-custom-label margin-top">Competitive Score</label>
       </div>
-      <div class="row">
-        <input disabled id="post-ace" class="checkbox-custom" name="ace" type="checkbox">
-        <label for="post-ace" class="checkbox-custom-label margin-top">Threw an Ace</label>
-      </div>
-      <div class="row">
-        <input disabled class="button margin-top" id="post-submit" type="submit" value="Submit"/>
-      </div>
-    </form>
-  </section>
-<% } %>
+    <% } %>
+    <div class="row">
+      <input disabled id="post-ace" class="checkbox-custom" name="ace" type="checkbox">
+      <label for="post-ace" class="checkbox-custom-label margin-top">Threw an Ace</label>
+    </div>
+    <div class="row">
+      <input disabled class="button margin-top" id="post-submit" type="submit" value="Submit"/>
+    </div>
+  </form>
+</section>

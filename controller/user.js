@@ -44,7 +44,7 @@ function create(name, secret, callback) {
 
 function post(user, score, competitive, ace, callback) {
   user.history.push(score);
-  if(competitive){
+  if(competitive && !user.hasPosted){
     user.score = score;
     user.hasPosted = true;
   }

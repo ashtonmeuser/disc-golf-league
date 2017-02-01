@@ -12,9 +12,9 @@ function validatePostForm(event) {
 
   if(!valid && event.type==='submit') event.preventDefault();
 
-  document.getElementById('post-submit').disabled = !valid;
-  document.getElementById('post-competitive').disabled = !valid;
-  document.getElementById('post-ace').disabled = !valid;
+  disableInput('post-submit', !valid);
+  disableInput('post-competitive', !valid);
+  disableInput('post-ace', !valid);
 }
 
 function validatePlaceForm(event) {
@@ -24,5 +24,12 @@ function validatePlaceForm(event) {
 
   if(!valid && event.type==='submit') event.preventDefault();
 
-  document.getElementById('place-submit').disabled = !valid;
+  disableInput('place-submit', !valid);
+}
+
+function disableInput(name, disabled) {
+  var input = document.getElementById(name);
+  if(input !== null){
+    input.disabled = disabled;
+  }
 }
