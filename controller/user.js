@@ -1,6 +1,7 @@
 var Cookies = require('cookies');
 var groupArray = require('group-array');
 var User = require('../model/user');
+var record = require('./record');
 
 function authenticate(req, res, next) {
   if(req.path == '/login') return next();
@@ -19,8 +20,13 @@ function authenticate(req, res, next) {
     if(user === null){
       return res.render('pages/login');
     }else{
-      req.user = user;
-      return next();
+      record.getCourseRecord(function(err, courseRecord) {
+        if(err) return next(err);
+        if(user.isAdmin) user.badges.admin = 1;
+        if(Math.min.apply(null, user.history) <= courseRecord) user.badges.record = 1;
+        req.user = user;
+        return next();
+      });
     }
   });
 }
@@ -50,7 +56,10 @@ function post(user, score, competitive, ace, callback) {
   }
   user.save(function(err) {
     if(err) return callback({status: 500, message: 'Unable to save score.'});
-    callback(null);
+    record.setCourseRecord(score, function(err) {
+      if(err) return callback(err);
+      callback(null);
+    });
   });
 }
 
@@ -69,7 +78,7 @@ function divisions(sort, callback) {
   });
 }
 
-function place(callback) {
+function place(date, callback) {
   divisions('score', function(err, players) {
     if(err) return callback(err);
 
@@ -106,7 +115,10 @@ function place(callback) {
       });
     });
 
-    callback(null);
+    record.setEndDate(date, function(err) {
+      if(err) return callback(err);
+      return callback(null);
+    });
   });
 }
 

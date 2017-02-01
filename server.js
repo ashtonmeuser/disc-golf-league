@@ -3,7 +3,6 @@ var Cookies = require('cookies');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var user = require('./controller/user');
-var User = require('./model/user');
 var app = express();
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
@@ -31,7 +30,8 @@ app.post('/login', function(req, res, next) {
 app.post('/place', function(req, res, next) {
   if(!req.user.isAdmin) return next({status: 401, message: 'Admin access only.'});
   if(req.body.password !== process.env.DISCGOLFADMINPASSWORD) return next({status: 401, message: 'Invalid Admin password.'});
-  user.place(function(err){
+  var date = req.body.date;
+  user.place(date, function(err){
     if(err) return next(err);
     res.redirect('/');
   });

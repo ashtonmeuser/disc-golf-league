@@ -13,5 +13,7 @@ module.exports = mongoose.model('User', new Schema({
     ace: {type: Number, default: 0},
     par: {type: Number, default: 0},
     top: {type: Number, default: 0},
+    admin: {type: Number, default: 0},
+    record: {type: Number, default: 0}
   }
 }));
