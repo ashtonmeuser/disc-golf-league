@@ -56,7 +56,9 @@ app.get('/', function(req, res, next) {
 
 app.post('/post', function(req, res, next) {
   var score = req.body.score;
-  user.post(req.user, score, function(err) {
+  var competitive = req.body.competitive;
+  var ace = req.body.ace;
+  user.post(req.user, score, competitive, ace, function(err) {
     if(err) return next(err);
     res.redirect('/');
   });

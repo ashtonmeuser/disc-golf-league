@@ -3,6 +3,9 @@
     <%- user.name %>
   </div>
   <div class="row">
+    Average Score: <%- user.history.length==0 ? 'N/A' : (user.history.reduce(function(a, b){return a + b;})/user.history.length).toFixed(2); %>
+  </div>
+  <div class="row">
     <%- divisions[user.division] %> Division, Tag <%- user.position===undefined ? 'N/A' : '#'+(user.position+1); %>
   </div>
 </section>

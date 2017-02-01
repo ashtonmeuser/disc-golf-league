@@ -14,7 +14,7 @@ function authenticate(req, res, next) {
   }
   if(user.name === undefined || user.secret === undefined) return res.render('pages/login');
 
-  User.findOne({name: user.name, secret: user.secret}, 'name division position score hasPosted isAdmin', function(err, user) {
+  User.findOne({name: user.name, secret: user.secret}, 'name division position score hasPosted isAdmin history badges', function(err, user) {
     if(err) return next({status: 500, message: 'Unable to access database.'});
     if(user === null){
       return res.render('pages/login');
@@ -36,9 +36,18 @@ function create(name, secret, callback) {
   });
 }
 
-function post(user, score, callback) {
-  user.score = score;
-  user.hasPosted = true;
+function post(user, score, competitive, ace, callback) {
+  user.history.push(score);
+  if(competitive){
+    user.score = score;
+    user.hasPosted = true;
+  }
+  if(ace){
+    user.badges.ace++;
+  }
+  if(score <= 0){
+    user.badges.par++;
+  }
   user.save(function(err) {
     if(err) return callback({status: 500, message: 'Unable to save score.'});
     callback(null);
@@ -47,10 +56,13 @@ function post(user, score, callback) {
 
 function divisions(sort, callback) {
   if(sort!=='position' && sort!=='score') return callback({status: 400, message: 'Must sort by position or score.'});
-  User.find({}, 'name division position score', function(err, users) {
+  User.find({}, 'name division position score badges', function(err, users) {
     if(err) return callback({status: 500, message: 'Unable to access database.'});
     users.sort(function(a, b) {
-      return (a[sort]===null && b[sort]!==null) ? 1 : a[sort] - b[sort];
+      if(a[sort]===null && b[sort]===null) return a.position - b.position;
+      else if(a[sort]===null) return 1;
+      else if(b[sort]===null) return -1;
+      else return a[sort] - b[sort];
     });
     var players = groupArray(users, 'division');
     callback(null, players);
@@ -83,6 +95,9 @@ function place(callback) {
       players[division].forEach(function(player, playerIndex) {
         player.division = divisionIndex;
         player.position = player.division*4+playerIndex;
+        if(player.position === 0){
+          player.badges.top++;
+        }
         player.score = null;
         player.hasPosted = false;
         player.save(function(err) {

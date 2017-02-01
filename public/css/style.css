@@ -99,6 +99,42 @@ section.standings {
 }
 /* End buttons, links */
 
+/* Checkbox */
+.checkbox-custom {
+  opacity: 0;
+  position: absolute;
+}
+.checkbox-custom, .checkbox-custom-label {
+  background-color: white;
+  padding: 10px;
+  width: 100%;
+  -webkit-border-radius: 10;
+  -webkit-appearance: none;
+  -moz-border-radius: 10;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.checkbox-custom + .checkbox-custom-label:before {
+  float: left;
+  margin-right: -20px;
+  content: "-"; /* Safari empty pseudo element hack */
+  color: transparent;
+  background: url('/img/i-unchecked.svg');
+  background-size: contain;
+  width: 20px;
+  height: 100%;
+  display: inline-block;
+}
+.checkbox-custom:checked + .checkbox-custom-label:before {
+  background: url('/img/i-checked.svg');
+  background-size: contain;
+}
+.checkbox-custom[disabled] + .checkbox-custom-label:before,
+.checkbox-custom[disabled] + .checkbox-custom-label {
+  display: none;
+}
+/* End checkbox */
+
 /* Input */
 form {
   width: 100%;
@@ -119,9 +155,18 @@ input {
   min-width: 100px;
   padding: 10px;
 }
+input[type=number] {
+  -moz-appearance: textfield;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0; /* Removes leftover margin */
+}
 input[disabled] {
   display: none;
 }
+label.margin-top,
 input.margin-top {
   margin-top: 10px;
 }

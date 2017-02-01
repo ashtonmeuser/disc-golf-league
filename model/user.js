@@ -7,5 +7,11 @@ module.exports = mongoose.model('User', new Schema({
   score: {type: Number, default: null},
   division: {type: Number, min: 0, max: 3, required: true, default: 3},
   position: {type: Number, default: null},
-  secret: {type: String, required: true}
+  secret: {type: String, required: true},
+  history: [Number],
+  badges: {
+    ace: {type: Number, default: 0},
+    par: {type: Number, default: 0},
+    top: {type: Number, default: 0},
+  }
 }));
