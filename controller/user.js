@@ -22,13 +22,17 @@ function authenticate(req, res, next) {
     }else{
       record.getCourseRecord(function(err, courseRecord) {
         if(err) return next(err);
-        if(user.isAdmin) user.badges.admin = 1;
-        if(Math.min.apply(null, user.history) <= courseRecord) user.badges.record = 1;
+        calculateBadges(user, courseRecord);
         req.user = user;
         return next();
       });
     }
   });
+}
+
+function calculateBadges(user, courseRecord) {
+  if(user.isAdmin) user.badges.admin = 1;
+  if(Math.min.apply(null, user.history) <= courseRecord) user.badges.record = 1;
 }
 
 function create(name, secret, callback) {
@@ -73,8 +77,14 @@ function divisions(sort, callback) {
       else if(b[sort]===null) return -1;
       else return a[sort] - b[sort];
     });
-    var players = groupArray(users, 'division');
-    callback(null, players);
+    record.getCourseRecord(function(err, courseRecord) {
+      if(err) return next(err);
+      users.forEach(function(user) {
+        calculateBadges(user, courseRecord);
+      });
+      var players = groupArray(users, 'division');
+      callback(null, players);
+    });
   });
 }
 

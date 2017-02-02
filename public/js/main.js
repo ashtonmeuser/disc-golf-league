@@ -33,3 +33,8 @@ function disableInput(name, disabled) {
     input.disabled = disabled;
   }
 }
+
+function toggleBadges(id) {
+  var badges = document.getElementById('badges-'+id);
+  badges.classList.toggle('badges-hidden');
+}

@@ -75,7 +75,7 @@ section.standings {
   margin: 5px 0;
 }
 .side-column {
-  width: 50px;
+  width: 30px;
 }
 .side-column.left {text-align: left;}
 .side-column.right {text-align: right;}
@@ -135,19 +135,28 @@ section.standings {
 }
 /* End checkbox */
 
-/* Icon */
+/* Badges */
 .icon {
-  padding-left: 15px;
-  width: 19px;
-  height: 19px;
-  margin: 3px 4px 0 4px;
+  display: inline-block;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  margin: 0 4px;
+}
+.badges-hidden:not(#badges-main) {
+  display: none;
+}
+span.no-badges {
+  color: #aaa;
+  font-weight: normal;
 }
 .i-admin{background: url('/img/i-admin.svg'); background-size: contain; background-repeat: no-repeat;}
 .i-ace{background: url('/img/i-ace.svg'); background-size: contain; background-repeat: no-repeat;}
 .i-record{background: url('/img/i-record.svg'); background-size: contain; background-repeat: no-repeat;}
 .i-top{background: url('/img/i-top.svg'); background-size: contain; background-repeat: no-repeat;}
 .i-par{background: url('/img/i-par.svg'); background-size: contain; background-repeat: no-repeat;}
-/* End Icon */
+/* End badges */
 
 /* Input */
 form {

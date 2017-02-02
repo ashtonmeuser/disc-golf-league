@@ -1,0 +1,12 @@
+<div class="row badges-hidden" id="badges-<%- badgeUser===user ? 'main' : badgeUser._id %>">
+  <% var totalBadges = 0; %>
+  <% ['ace','admin','record','top','par'].forEach(function(badge) { %>
+    <% if(badgeUser.badges[badge] > 0){ %>
+      <% totalBadges++; %>
+      <span class="icon i-<%- badge %>"><%- badgeUser.badges[badge] %></span>
+    <% } %>
+  <% }); %>
+  <% if(totalBadges === 0){ %>
+    <span class="no-badges">No Badges</span>
+  <% } %>
+</div>

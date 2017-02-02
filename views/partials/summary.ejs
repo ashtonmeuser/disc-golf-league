@@ -8,16 +8,6 @@
   <div class="row">
     <%- divisions[user.division] %> Division, Tag <%- user.position===undefined ? 'N/A' : '#'+(user.position+1); %>
   </div>
-  <div class="row">
-    <% var totalBadges = 0; %>
-    <% ['ace','admin','record','top','par'].forEach(function(badge) { %>
-      <% if(user.badges[badge] > 0){ %>
-        <% totalBadges++; %>
-        <span class="icon i-<%- badge %>"><%- user.badges[badge] %></span>
-      <% } %>
-    <% }); %>
-    <% if(totalBadges === 0){ %>
-      No Badges
-    <% } %>
-  </div>
+  <% badgeUser = user %>
+  <% include ./badges %>
 </section>
