@@ -69,7 +69,7 @@ function post(user, score, competitive, ace, callback) {
 
 function divisions(sort, callback) {
   if(sort!=='position' && sort!=='score') return callback({status: 400, message: 'Must sort by position or score.'});
-  User.find({}, 'name division position score badges', function(err, users) {
+  User.find({}, 'name division position score badges isAdmin history', function(err, users) {
     if(err) return callback({status: 500, message: 'Unable to access database.'});
     users.sort(function(a, b) {
       if(a[sort]===null && b[sort]===null) return a.position - b.position;
