@@ -7,15 +7,15 @@
   <main>
 
     <section id="login">
-      <form action="/login" method="post">
+      <form id="login-form" action="/login" method="post">
         <div class="row">
-          <input type="text" name="name" placeholder="Name"/>
+          <input id="login-name" type="text" name="name" placeholder="Name"/>
         </div>
         <div class="row">
-          <input class="margin-top" type="password" name="secret" placeholder="Secret"/>
+          <input id="login-password" class="margin-top" type="password" name="secret" placeholder="Secret"/>
         </div>
         <div class="row">
-          <input class="button margin-top" type="submit" value="Login"/>
+          <input disabled id="login-submit" class="button margin-top" type="submit" value="Login"/>
         </div>
       </form>
     </section>

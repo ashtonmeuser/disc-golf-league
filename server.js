@@ -3,6 +3,7 @@ var Cookies = require('cookies');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var user = require('./controller/user');
+var record = require('./controller/record');
 var app = express();
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
@@ -48,9 +49,12 @@ app.post('/user', function(req, res, next) {
 // Main
 
 app.get('/', function(req, res, next) {
-  user.divisions('position', function(err, players) {
+  user.playersByDivision('position', function(err, players) {
     if(err) return next(err);
-    res.render('pages/index', {user: req.user, players: players, divisions: ['Gold','Silver','Bronze','Unranked']});
+    record.getDateDiff(function(err, dateDiff) {
+      if(err) return next(err);
+      res.render('pages/index', {user: req.user, players: players, dateDiff: dateDiff, divisions: user.divisions, badges: user.badges});
+    });
   });
 });
 

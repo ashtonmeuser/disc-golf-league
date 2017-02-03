@@ -3,6 +3,9 @@ var groupArray = require('group-array');
 var User = require('../model/user');
 var record = require('./record');
 
+var divisions = ['Gold','Silver','Bronze','Unranked'];
+var badges = ['ten','ace','admin','top','par','bottom','record'];
+
 function authenticate(req, res, next) {
   if(req.path == '/login') return next();
   var cookies = new Cookies(req, res);
@@ -33,6 +36,7 @@ function authenticate(req, res, next) {
 function calculateBadges(user, courseRecord) {
   if(user.isAdmin) user.badges.admin = 1;
   if(Math.min.apply(null, user.history) <= courseRecord) user.badges.record = 1;
+  user.badges.ten = Math.floor(user.history.length/10);
 }
 
 function create(name, secret, callback) {
@@ -67,7 +71,7 @@ function post(user, score, competitive, ace, callback) {
   });
 }
 
-function divisions(sort, callback) {
+function playersByDivision(sort, callback) {
   if(sort!=='position' && sort!=='score') return callback({status: 400, message: 'Must sort by position or score.'});
   User.find({}, 'name division position score badges isAdmin history', function(err, users) {
     if(err) return callback({status: 500, message: 'Unable to access database.'});
@@ -89,7 +93,7 @@ function divisions(sort, callback) {
 }
 
 function place(date, callback) {
-  divisions('score', function(err, players) {
+  playersByDivision('score', function(err, players) {
     if(err) return callback(err);
 
     // Calculate new standings
@@ -116,6 +120,8 @@ function place(date, callback) {
         player.position = player.division*4+playerIndex;
         if(player.position === 0){
           player.badges.top++;
+        }else if(divisionIndex===divisions.length-1 && playerIndex===players[division].length-1){
+          player.badges.bottom++;
         }
         player.score = null;
         player.hasPosted = false;
@@ -136,6 +142,8 @@ module.exports = {
   create,
   authenticate,
   divisions,
+  badges,
+  playersByDivision,
   post,
   place
 }

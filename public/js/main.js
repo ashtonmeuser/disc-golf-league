@@ -1,14 +1,22 @@
-onload = function () {
-  document.getElementById('post-score').oninput = validatePostForm;
-  document.getElementById('place-password').oninput = validatePlaceForm;
-  document.getElementById('place-date').oninput = validatePlaceForm;
-  document.getElementById('post-form').addEventListener('submit', validatePostForm);
-  document.getElementById('place-form').addEventListener('submit', validatePlaceForm);
+window.onload = function () {
+  inputHandler('post-score', validatePostForm);
+  inputHandler('place-password', validatePlaceForm);
+  inputHandler('place-date', validatePlaceForm);
+  inputHandler('login-name', validateLoginForm);
+  inputHandler('login-password', validateLoginForm);
+  submissionHandler('post-form', validatePostForm);
+  submissionHandler('place-form', validatePlaceForm);
+  submissionHandler('login-form', validateLoginForm);
+
+  PullToRefresh.init({
+    mainElement: 'main',
+    onRefresh: function(){window.location.reload();}
+  });
 };
 
 function validatePostForm(event) {
-  var postScoreInput = document.getElementById('post-score');
-  var valid = postScoreInput.value && Number.isInteger(Number(postScoreInput.value));
+  var scoreInput = document.getElementById('post-score');
+  var valid = scoreInput.value && Number.isInteger(Number(scoreInput.value));
 
   if(!valid && event.type==='submit') event.preventDefault();
 
@@ -18,13 +26,37 @@ function validatePostForm(event) {
 }
 
 function validatePlaceForm(event) {
-  var postPasswordInput = document.getElementById('place-password');
-  var placeDateInput = document.getElementById('place-date');
-  var valid = postPasswordInput.value!=='' && /^\d{4}-\d{2}-\d{2}$/.test(placeDateInput.value);
+  var passwordInput = document.getElementById('place-password');
+  var dateInput = document.getElementById('place-date');
+  var valid = passwordInput.value!=='' && /^\d{4}-\d{2}-\d{2}$/.test(dateInput.value);
 
   if(!valid && event.type==='submit') event.preventDefault();
 
   disableInput('place-submit', !valid);
+}
+
+function validateLoginForm(event) {
+  var nameInput = document.getElementById('login-name');
+  var passwordInput = document.getElementById('login-password');
+  var valid = passwordInput.value!=='' && nameInput.value!=='';
+
+  if(!valid && event.type==='submit') event.preventDefault();
+
+  disableInput('login-submit', !valid);
+}
+
+function inputHandler(id, handler) {
+  var input = document.getElementById(id);
+  if(input !== null){
+    input.oninput = handler;
+  }
+}
+
+function submissionHandler(id, handler) {
+  var form = document.getElementById(id);
+  if(form !== null){
+    form.addEventListener('submit', handler);
+  }
 }
 
 function disableInput(name, disabled) {

@@ -156,6 +156,8 @@ span.no-badges {
 .i-record{background: url('/img/i-record.svg'); background-size: contain; background-repeat: no-repeat;}
 .i-top{background: url('/img/i-top.svg'); background-size: contain; background-repeat: no-repeat;}
 .i-par{background: url('/img/i-par.svg'); background-size: contain; background-repeat: no-repeat;}
+.i-ten{background: url('/img/i-ten.svg'); background-size: contain; background-repeat: no-repeat;}
+.i-bottom{background: url('/img/i-bottom.svg'); background-size: contain; background-repeat: no-repeat;}
 /* End badges */
 
 /* Input */

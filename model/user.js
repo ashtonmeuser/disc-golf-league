@@ -14,6 +14,8 @@ module.exports = mongoose.model('User', new Schema({
     par: {type: Number, default: 0},
     top: {type: Number, default: 0},
     admin: {type: Number, default: 0},
-    record: {type: Number, default: 0}
+    record: {type: Number, default: 0},
+    bottom: {type: Number, default: 0},
+    ten: {type: Number, default: 0}
   }
 }));

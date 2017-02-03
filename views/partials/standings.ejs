@@ -5,25 +5,22 @@
     </div>
     <div class="players">
       <% players[division].forEach(function(player) { %>
-        <div class="row player">
 
+        <div class="row player">
           <div class="side-column left">
             <%- player.position===null ? 'N/A' : player.position+1 %>
           </div>
-
-          <div class="center-column">
-            <div class="row" onclick="toggleBadges('<%- player._id %>');">
-              <%- player.name %>
-            </div>
-            <% badgeUser = player %>
-            <% include ./badges %>
+          <div class="center-column" onclick="toggleBadges('<%- player._id %>');">
+            <%- player.name %>
           </div>
-
           <div class="side-column right">
             <%- player.score===null ? 'N/A' : player.score===0 ? 'Par' : player.score>0 ? '+'+player.score : player.score %>
           </div>
-
         </div>
+
+        <% badgeUser = player %>
+        <% include ./badges %>
+
       <% }); %>
     </div>
   </section>
