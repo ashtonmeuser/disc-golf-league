@@ -39,31 +39,56 @@ section {
 /* Main */
 section.summary {
   background-color: white;
-  margin-bottom: 40px;
   padding: 10px;
   box-sizing: border-box;
 }
-.name {
+section.message {
+  box-sizing: border-box;
+  position: relative;
+  padding: 10px;
+  background-color: #f4ad42;
+}
+.message-close {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 5px;
+  cursor: pointer;
+  background: url('/img/i-close.svg'); background-size: contain; background-repeat: no-repeat;
+}
+.message-body {
+  display: block;
+}
+.name,
+.message-title {
   font-weight: bold;
   margin-bottom: 5px;
+}
+section.margin-top {
+  margin-top: 40px;
+}
+section.margin-bottom {
+  margin-bottom: 40px;
 }
 section.error {
   background-color: #ff6b6b;
   padding: 10px;
   box-sizing: border-box;
 }
-section.post {
-  margin-bottom: 40px;
-}
-section.place {
-  margin-top: 40px;
-}
-section.standings {
-  margin-bottom: 10px;
-  overflow: hidden;
-}
 .division {
-  margin: 5px;
+  -webkit-border-radius: 10;
+  -moz-border-radius: 10;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.division:last-child {
+  margin-bottom: 0;
+}
+.division-title {
+  padding: 5px 0;
   font-weight: bold;
 }
 .players {
@@ -167,7 +192,13 @@ form {
   flex-direction: column;
   align-items: center;
 }
-input {
+textarea {
+  margin: 0;
+}
+input,
+textarea {
+  resize: none;
+  outline: none;
   font-family: Tahoma, Geneva, sans-serif;
   text-align: center;
   font-size: 1em;
@@ -180,17 +211,10 @@ input {
   min-width: 100px;
   padding: 10px;
 }
-input[type=number] {
-  -moz-appearance: textfield;
-}
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0; /* Removes leftover margin */
-}
 input[disabled] {
   display: none;
 }
+textarea.margin-top,
 label.margin-top,
 input.margin-top {
   margin-top: 10px;

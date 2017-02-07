@@ -30,11 +30,22 @@ app.post('/login', function(req, res, next) {
 
 app.post('/place', function(req, res, next) {
   if(!req.user.isAdmin) return next({status: 401, message: 'Admin access only.'});
-  if(req.body.password !== process.env.DISCGOLFADMINPASSWORD) return next({status: 401, message: 'Invalid Admin password.'});
   var date = req.body.date;
-  user.place(date, function(err){
+  user.place(date, req.records['courseRecord'], function(err){
     if(err) return next(err);
     res.redirect('/');
+  });
+});
+
+app.post('/notice', function(req, res, next) {
+  if(!req.user.isAdmin) return next({status: 401, message: 'Admin access only.'});
+  var message = req.body.message;
+  user.resetViewedNotice(function(err) {
+    if(err) return next(err);
+    record.setNotice(message, function(err) {
+      if(err) return next(err);
+      res.redirect('/');
+    });
   });
 });
 
@@ -49,12 +60,10 @@ app.post('/user', function(req, res, next) {
 // Main
 
 app.get('/', function(req, res, next) {
-  user.playersByDivision('position', function(err, players) {
+  user.playersByDivision('position', req.records['courseRecord'], function(err, players) {
     if(err) return next(err);
-    record.getDateDiff(function(err, dateDiff) {
-      if(err) return next(err);
-      res.render('pages/index', {user: req.user, players: players, dateDiff: dateDiff, divisions: user.divisions, badges: user.badges});
-    });
+    var dateDiff = record.getDateDiff(req.records['endDate']);
+    res.render('pages/index', {user: req.user, players: players, dateDiff: dateDiff, divisions: user.divisions, badges: user.badges, message: req.records['notice']});
   });
 });
 

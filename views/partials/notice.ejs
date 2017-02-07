@@ -1,0 +1,12 @@
+<% if(user.isAdmin) { %>
+  <section class="notice margin-top">
+    <form id="notice-form" action="/notice" method="post">
+      <div class="row">
+        <textarea id="notice-message" placeholder="Notice (500 characters)" name="message" cols="40" rows="3"></textarea>
+      </div>
+      <div class="row">
+        <input disabled class="button margin-top" id="notice-submit" type="submit" value="Post Notice"/>
+      </div>
+    </form>
+  </section>
+<% } %>

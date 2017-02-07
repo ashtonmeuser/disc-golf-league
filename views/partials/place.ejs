@@ -1,11 +1,8 @@
 <% if(user.isAdmin) { %>
-  <section class="place">
+  <section class="place margin-top">
     <form id="place-form" action="/place" method="post">
       <div class="row">
-        <input id="place-password" type="password" name="password" placeholder="Admin Password" autocomplete="off"/>
-      </div>
-      <div class="row">
-        <input class="margin-top" id="place-date" type="text" name="date" placeholder="Leg Close (YYYY-MM-DD)"/>
+        <input id="place-date" type="text" name="date" placeholder="Leg Close (YYYY-MM-DD)"/>
       </div>
       <div class="row">
         <input disabled class="button margin-top" id="place-submit" type="submit" value="End Leg"/>

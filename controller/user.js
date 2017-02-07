@@ -18,16 +18,23 @@ function authenticate(req, res, next) {
   }
   if(user.name === undefined || user.secret === undefined) return res.render('pages/login');
 
-  User.findOne({name: user.name, secret: user.secret}, 'name division position score hasPosted isAdmin history badges', function(err, user) {
+  User.findOne({name: user.name, secret: user.secret}, 'name division position score hasPosted isAdmin history badges viewedNotice', function(err, user) {
     if(err) return next({status: 500, message: 'Unable to access database.'});
     if(user === null){
       return res.render('pages/login');
     }else{
-      record.getCourseRecord(function(err, courseRecord) {
+      record.getRecords(function(err, records) {
         if(err) return next(err);
-        calculateBadges(user, courseRecord);
-        req.user = user;
-        return next();
+        if(user.viewedNotice) records['notice'] = null;
+        calculateBadges(user, records['courseRecord']);
+        user.lastLogin = new Date();
+        user.viewedNotice = true;
+        user.save(function(err) {
+          if(err) return next({status: 500, message: 'Unable to access database.'});
+          req.records = records;
+          req.user = user;
+          return next();
+        });
       });
     }
   });
@@ -35,7 +42,7 @@ function authenticate(req, res, next) {
 
 function calculateBadges(user, courseRecord) {
   if(user.isAdmin) user.badges.admin = 1;
-  if(Math.min.apply(null, user.history) <= courseRecord) user.badges.record = 1;
+  user.badges.record = (courseRecord!==undefined && Math.min.apply(null, user.history)<=courseRecord) ? 1 : 0;
   user.badges.ten = Math.floor(user.history.length/10);
 }
 
@@ -51,6 +58,7 @@ function create(name, secret, callback) {
 }
 
 function post(user, score, competitive, ace, callback) {
+  score = Number(score);
   user.history.push(score);
   if(competitive && !user.hasPosted){
     user.score = score;
@@ -71,7 +79,14 @@ function post(user, score, competitive, ace, callback) {
   });
 }
 
-function playersByDivision(sort, callback) {
+function resetViewedNotice(callback) {
+  User.update({}, {viewedNotice: false}, {multi: true}, function(err) {
+    if(err) return callback({status: 500, message: 'Unable to save score.'});
+    callback(null);
+  });
+}
+
+function playersByDivision(sort, courseRecord, callback) {
   if(sort!=='position' && sort!=='score') return callback({status: 400, message: 'Must sort by position or score.'});
   User.find({}, 'name division position score badges isAdmin history', function(err, users) {
     if(err) return callback({status: 500, message: 'Unable to access database.'});
@@ -81,19 +96,16 @@ function playersByDivision(sort, callback) {
       else if(b[sort]===null) return -1;
       else return a[sort] - b[sort];
     });
-    record.getCourseRecord(function(err, courseRecord) {
-      if(err) return next(err);
-      users.forEach(function(user) {
-        calculateBadges(user, courseRecord);
-      });
-      var players = groupArray(users, 'division');
-      callback(null, players);
+    users.forEach(function(user) {
+      calculateBadges(user, courseRecord);
     });
+    var players = groupArray(users, 'division');
+    callback(null, players);
   });
 }
 
-function place(date, callback) {
-  playersByDivision('score', function(err, players) {
+function place(date, courseRecord, callback) {
+  playersByDivision('score', courseRecord, function(err, players) {
     if(err) return callback(err);
 
     // Calculate new standings
@@ -145,5 +157,6 @@ module.exports = {
   badges,
   playersByDivision,
   post,
-  place
+  place,
+  resetViewedNotice
 }

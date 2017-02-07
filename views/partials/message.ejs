@@ -1,0 +1,11 @@
+<% if(message!==null && message!==undefined){ %>
+  <section class="message margin-bottom">
+    <div class="message-close" onclick="window.location.reload();"></div>
+    <div class="row message-title">
+      Notice
+    </div>
+    <div class="row message-body">
+      <%- message %>
+    </div>
+  </section>
+<% } %>

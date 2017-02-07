@@ -8,6 +8,8 @@ module.exports = mongoose.model('User', new Schema({
   division: {type: Number, min: 0, max: 3, required: true, default: 3},
   position: {type: Number, default: null},
   secret: {type: String, required: true},
+  viewedNotice: {type: Boolean, default: false},
+  lastLogin: {type: Date, default: null},
   history: [Number],
   badges: {
     ace: {type: Number, default: 0},

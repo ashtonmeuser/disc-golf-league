@@ -1,10 +1,11 @@
 window.onload = function () {
   inputHandler('post-score', validatePostForm);
-  inputHandler('place-password', validatePlaceForm);
+  inputHandler('notice-message', validateNoticeForm);
   inputHandler('place-date', validatePlaceForm);
   inputHandler('login-name', validateLoginForm);
   inputHandler('login-password', validateLoginForm);
   submissionHandler('post-form', validatePostForm);
+  submissionHandler('notice-form', validateNoticeForm);
   submissionHandler('place-form', validatePlaceForm);
   submissionHandler('login-form', validateLoginForm);
 
@@ -16,6 +17,7 @@ window.onload = function () {
 
 function validatePostForm(event) {
   var scoreInput = document.getElementById('post-score');
+  if(scoreInput.value.toLowerCase() === 'par') scoreInput.value = 0;
   var valid = scoreInput.value && Number.isInteger(Number(scoreInput.value));
 
   if(!valid && event.type==='submit') event.preventDefault();
@@ -26,13 +28,22 @@ function validatePostForm(event) {
 }
 
 function validatePlaceForm(event) {
-  var passwordInput = document.getElementById('place-password');
   var dateInput = document.getElementById('place-date');
-  var valid = passwordInput.value!=='' && /^\d{4}-\d{2}-\d{2}$/.test(dateInput.value);
+  var valid = /^\d{4}-\d{2}-\d{2}$/.test(dateInput.value);
 
   if(!valid && event.type==='submit') event.preventDefault();
 
   disableInput('place-submit', !valid);
+}
+
+function validateNoticeForm(event) {
+  var messageInput = document.getElementById('notice-message');
+  messageInput.value = messageInput.value.substring(0, 500);
+  var valid = messageInput.value !== '';
+
+  if(!valid && event.type==='submit') event.preventDefault();
+
+  disableInput('notice-submit', !valid);
 }
 
 function validateLoginForm(event) {
