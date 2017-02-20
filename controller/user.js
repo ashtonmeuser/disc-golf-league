@@ -3,7 +3,7 @@ var groupArray = require('group-array');
 var User = require('../model/user');
 var record = require('./record');
 
-var divisions = ['Gold','Silver','Bronze','Unranked'];
+var divisions = ['Non Mortal','Gold','Silver','Bronze','Unranked'];
 var badges = ['ten','ace','admin','top','par','bottom','record'];
 
 function authenticate(req, res, next) {
@@ -125,11 +125,12 @@ function place(date, courseRecord, callback) {
     });
 
     // Reset scores, save players
+    var divisionBasePosition = 0;
     Object.keys(players).forEach(function(division) {
       var divisionIndex = Number(division);
       players[division].forEach(function(player, playerIndex) {
         player.division = divisionIndex;
-        player.position = player.division*4+playerIndex;
+        player.position = divisionBasePosition+playerIndex;
         if(player.position === 0){
           player.badges.top++;
         }else if(divisionIndex===divisions.length-1 && playerIndex===players[division].length-1){
@@ -141,6 +142,7 @@ function place(date, courseRecord, callback) {
           if(err) return callback({status: 500, message: 'Unable to save score.'});
         });
       });
+      divisionBasePosition += players[division].length;
     });
 
     record.setEndDate(date, function(err) {

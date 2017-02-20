@@ -107,10 +107,11 @@ section.error {
 .center-column {
   flex-grow: 1;
 }
-.division-0 {background-color: #e5b31b;}
-.division-1 {background-color: #a9a9a9;}
-.division-2 {background-color: #b1703b;}
-.division-3 {background-color: #6bbdd6;}
+.division-0 {background-color: #ff95e6;}
+.division-1 {background-color: #e5b31b;}
+.division-2 {background-color: #a9a9a9;}
+.division-3 {background-color: #b1703b;}
+.division-4 {background-color: #6bbdd6;}
 /* End partials */
 
 /* Buttons, links */
