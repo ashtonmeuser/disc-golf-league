@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var user = require('./controller/user');
 var record = require('./controller/record');
+var mongooseOptions = {server: {socketOptions: {keepAlive: 300000, connectTimeoutMS: 30000}}};
 var app = express();
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
@@ -11,7 +12,7 @@ app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/discgolfleague');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/discgolfleague', mongooseOptions);
 
 // Login
 
