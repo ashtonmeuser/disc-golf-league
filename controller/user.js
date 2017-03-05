@@ -4,7 +4,7 @@ var User = require('../model/user');
 var record = require('./record');
 
 var divisions = ['Non Mortal','Gold','Silver','Bronze','Unranked'];
-var badges = ['ten','ace','admin','top','par','bottom','record','god'];
+var badges = ['ten','ace','admin','top','par','bottom','record','god','bomb'];
 
 function authenticate(req, res, next) {
   if(req.path == '/login') return next();
@@ -109,11 +109,13 @@ function place(date, courseRecord, callback) {
     if(err) return callback(err);
 
     // Calculate new standings
+    var worstScore = null;
     Object.keys(players).forEach(function(division) {
       var divisionIndex = Number(division);
       var nextDivision = String(divisionIndex+1);
-      if(players[nextDivision] === undefined) return;
       var player = players[division][players[division].length-1];
+      if(player.score!==null && (worstScore===null || player.score>worstScore)) worstScore = player.score;
+      if(players[nextDivision] === undefined) return;
       var challenger = players[nextDivision][0];
 
       if((challenger.score!==null && player.score===null) || challenger.score<player.score){
@@ -123,6 +125,7 @@ function place(date, courseRecord, callback) {
         players[nextDivision].unshift(player);
       }
     });
+    console.log("worstScore: "+worstScore);
 
     // Reset scores, save players
     var divisionBasePosition = 0;
@@ -131,7 +134,8 @@ function place(date, courseRecord, callback) {
       players[division].forEach(function(player, playerIndex) {
         player.division = divisionIndex;
         player.position = divisionBasePosition+playerIndex;
-        if(player.position === 0){
+        if(player.score!==null && player.score===worstScore) player.badges.bomb++;
+        if(divisionIndex === 0){
           player.badges.god++;
         }else if(divisionIndex===1 && playerIndex===0){
           player.badges.top++;
