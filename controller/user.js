@@ -125,7 +125,6 @@ function place(date, courseRecord, callback) {
         players[nextDivision].unshift(player);
       }
     });
-    console.log("worstScore: "+worstScore);
 
     // Reset scores, save players
     var divisionBasePosition = 0;
