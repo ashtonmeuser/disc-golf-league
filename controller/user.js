@@ -4,7 +4,7 @@ var User = require('../model/user');
 var record = require('./record');
 
 var divisions = ['Non Mortal','Gold','Silver','Bronze','Unranked'];
-var badges = ['ten','ace','admin','top','par','bottom','record','god','bomb'];
+var badges = ['ten','ace','admin','top','par','bottom','record','god','bomb','noscore'];
 
 function authenticate(req, res, next) {
   if(req.path == '/login') return next();
@@ -134,6 +134,7 @@ function place(date, courseRecord, callback) {
         player.division = divisionIndex;
         player.position = divisionBasePosition+playerIndex;
         if(player.score!==null && player.score===worstScore) player.badges.bomb++;
+        if(player.score==null) player.badges.noscore++;
         if(divisionIndex === 0){
           player.badges.god++;
         }else if(divisionIndex===1 && playerIndex===0){
