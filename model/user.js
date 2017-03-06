@@ -20,6 +20,7 @@ module.exports = mongoose.model('User', new Schema({
     admin: {type: Number, default: 0},
     record: {type: Number, default: 0},
     bottom: {type: Number, default: 0},
-    ten: {type: Number, default: 0}
+    ten: {type: Number, default: 0}, 
+    noscore: {type: Number, default: 0}
   }
 }));
