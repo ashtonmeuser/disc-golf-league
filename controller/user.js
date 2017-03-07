@@ -4,7 +4,7 @@ var User = require('../model/user');
 var record = require('./record');
 
 var divisions = ['Non Mortal','Gold','Silver','Bronze','Unranked'];
-var badges = ['ten','ace','admin','top','par','bottom','record','god','bomb','noscore'];
+var badges = ['ten','ace','admin','top','par','bottom','record','god','bomb','noscore','blocked'];
 
 function authenticate(req, res, next) {
   if(req.path == '/login') return next();
@@ -118,6 +118,8 @@ function place(date, courseRecord, callback) {
       if(players[nextDivision] === undefined) return;
       var challenger = players[nextDivision][0];
 
+      if((challenger.score!==null && player.score===null) || challenger.score==player.score) player.badges.blocked++;
+      
       if((challenger.score!==null && player.score===null) || challenger.score<player.score){
         players[division].pop();
         players[nextDivision].splice(0, 1);
