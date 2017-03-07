@@ -1,3 +1,3 @@
-# Disc Golf Standing
+# Disc Golf League
 
-A platform for tracking disc golf league standing.
+A platform for tracking disc golf league standings.
