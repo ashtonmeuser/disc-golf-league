@@ -21,6 +21,7 @@ module.exports = mongoose.model('User', new Schema({
     record: {type: Number, default: 0},
     bottom: {type: Number, default: 0},
     ten: {type: Number, default: 0}, 
-    noscore: {type: Number, default: 0}
+    noscore: {type: Number, default: 0},
+    blocked: {type: Number, default: 0}
   }
 }));
