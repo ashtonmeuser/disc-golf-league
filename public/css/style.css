@@ -187,7 +187,7 @@ span.no-badges {
 .i-ten{background: url('/img/i-ten.svg'); background-size: contain; background-repeat: no-repeat;}
 .i-bottom{background: url('/img/i-bottom.svg'); background-size: contain; background-repeat: no-repeat;}
 .i-noscore{background: url('/img/i-noscore.svg'); background-size: contain; background-repeat: no-repeat;}
-.i-noscore{background: url('/img/i-blocked.svg'); background-size: contain; background-repeat: no-repeat;}
+.i-blocked{background: url('/img/i-blocked.svg'); background-size: contain; background-repeat: no-repeat;}
 /* End badges */
 
 /* Input */
