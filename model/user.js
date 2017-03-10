@@ -23,6 +23,9 @@ module.exports = mongoose.model('User', new Schema({
     bottom: {type: Number, default: 0},
     ten: {type: Number, default: 0}, 
     noscore: {type: Number, default: 0},
-    blocked: {type: Number, default: 0}
+    blocked: {type: Number, default: 0}, 
+    snowflake: {type: Number, default: 0},
+    anchor: {type: Number, default: 0},
+    flame: {type: Number, default: 0}
   }
 }));
