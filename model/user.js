@@ -11,6 +11,7 @@ module.exports = mongoose.model('User', new Schema({
   viewedNotice: {type: Boolean, default: false},
   lastLogin: {type: Date, default: null},
   history: [Number],
+  divHistory: [Number],
   badges: {
     ace: {type: Number, default: 0},
     par: {type: Number, default: 0},
