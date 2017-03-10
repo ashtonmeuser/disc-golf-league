@@ -118,7 +118,7 @@ function place(date, courseRecord, callback) {
       if(players[nextDivision] === undefined) return;
       var challenger = players[nextDivision][0];
 
-      if((challenger.score!==null && player.score===null) || challenger.score==player.score) player.badges.blocked++;
+      if(challenger.score==player.score) player.badges.blocked++;
       
       if((challenger.score!==null && player.score===null) || challenger.score<player.score){
         players[division].pop();
