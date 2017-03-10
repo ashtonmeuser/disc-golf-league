@@ -4,7 +4,7 @@ var User = require('../model/user');
 var record = require('./record');
 
 var divisions = ['Non Mortal','Gold','Silver','Bronze','Unranked'];
-var badges = ['ten','ace','admin','top','par','bottom','record','god','bomb','noscore','blocked','snowflake','flame','anchor','refresh'];
+var badges = ['ten','ace','admin','top','par','bottom','record','god','bomb','noscore','blocked','thumbdown','flame','anchor','refresh'];
 
 function authenticate(req, res, next) {
   if(req.path == '/login') return next();
@@ -156,7 +156,7 @@ function place(date, courseRecord, callback) {
         }else if(user.divHistory[divLength-3] > user.divHistory[divLength-2] && user.divHistory[divLength-2] > user.divHistory[divLength.length-1]){
           player.badges.flame++;
         }else if(user.divHistory[divLength-3] < user.divHistory[divLength-2] && user.divHistory[divLength-2] < user.divHistory[divLength.length-1]){
-          player.badges.snowflake++;
+          player.badges.thumbdown++;
         }else if(user.divHistory[divLength-3] == user.divHistory[divLength-1]){
           player.badges.refresh++;
         }
