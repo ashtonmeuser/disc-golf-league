@@ -4,7 +4,7 @@ var User = require('../model/user');
 var record = require('./record');
 
 var divisions = ['Non Mortal','Gold','Silver','Bronze','Unranked'];
-var badges = ['ten','ace','admin','top','par','bottom','record','god','bomb','noscore','blocked'];
+var badges = ['ten','ace','admin','top','par','bottom','record','god','bomb','noscore','blocked','snowflake','flame','anchor'];
 
 function authenticate(req, res, next) {
   if(req.path == '/login') return next();
@@ -126,6 +126,8 @@ function place(date, courseRecord, callback) {
         players[division].push(challenger);
         players[nextDivision].unshift(player);
       }
+      
+      
     });
 
     // Reset scores, save players
@@ -134,6 +136,7 @@ function place(date, courseRecord, callback) {
       var divisionIndex = Number(division);
       players[division].forEach(function(player, playerIndex) {
         player.division = divisionIndex;
+        user.divHistory.push(divisionIndex);
         player.position = divisionBasePosition+playerIndex;
         if(player.score!==null && player.score===worstScore) player.badges.bomb++;
         if(player.score==null) player.badges.noscore++;
@@ -144,6 +147,18 @@ function place(date, courseRecord, callback) {
         }else if(divisionIndex===divisions.length-1 && playerIndex===players[division].length-1){
           player.badges.bottom++;
         }
+        
+        var divLength = divHistory.length;
+        if(divLength < 3){
+          return;
+        }else if(user.divHistory[divLength-3] == user.divHistory[divLength-2] && user.divHistory[divLength-2] == user.divHistory[divLength.length-1]){
+          player.badges.anchor++;
+        }else if(user.divHistory[divLength-3] > user.divHistory[divLength-2] && user.divHistory[divLength-2] > user.divHistory[divLength.length-1]){
+          player.badges.flame++;
+        }else if(user.divHistory[divLength-3] < user.divHistory[divLength-2] && user.divHistory[divLength-2] < user.divHistory[divLength.length-1]){
+          player.badges.snowflake++;
+        }
+          
         player.score = null;
         player.hasPosted = false;
         player.save(function(err) {
