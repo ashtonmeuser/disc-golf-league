@@ -188,6 +188,10 @@ span.no-badges {
 .i-bottom{background: url('/img/i-bottom.svg'); background-size: contain; background-repeat: no-repeat;}
 .i-noscore{background: url('/img/i-noscore.svg'); background-size: contain; background-repeat: no-repeat;}
 .i-blocked{background: url('/img/i-blocked.svg'); background-size: contain; background-repeat: no-repeat;}
+.i-snowflake{background: url('/img/i-snowflake.svg'); background-size: contain; background-repeat: no-repeat;}
+.i-anchor{background: url('/img/i-anchor.svg'); background-size: contain; background-repeat: no-repeat;}
+.i-flame{background: url('/img/i-flame.svg'); background-size: contain; background-repeat: no-repeat;}
+
 /* End badges */
 
 /* Input */
