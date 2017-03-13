@@ -61,6 +61,9 @@ section.message {
 .message-body {
   display: block;
 }
+.message-body p {
+  margin: 5px 0;
+}
 .name,
 .message-title {
   font-weight: bold;
@@ -187,6 +190,11 @@ span.no-badges {
 .i-ten{background: url('/img/i-ten.svg'); background-size: contain; background-repeat: no-repeat;}
 .i-bottom{background: url('/img/i-bottom.svg'); background-size: contain; background-repeat: no-repeat;}
 .i-noscore{background: url('/img/i-noscore.svg'); background-size: contain; background-repeat: no-repeat;}
+.i-blocked{background: url('/img/i-blocked.svg'); background-size: contain; background-repeat: no-repeat;}
+.i-falling{background: url('/img/i-falling.svg'); background-size: contain; background-repeat: no-repeat;}
+.i-staying{background: url('/img/i-staying.svg'); background-size: contain; background-repeat: no-repeat;}
+.i-rising{background: url('/img/i-rising.svg'); background-size: contain; background-repeat: no-repeat;}
+.i-returning{background: url('/img/i-returning.svg'); background-size: contain; background-repeat: no-repeat;}
 /* End badges */
 
 /* Input */
