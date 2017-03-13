@@ -4,7 +4,7 @@ var User = require('../model/user');
 var record = require('./record');
 
 var divisions = ['Non Mortal','Gold','Silver','Bronze','Unranked'];
-var badges = ['ten','ace','admin','top','par','bottom','record','god','bomb','noscore','blocked','thumbdown','flame','anchor','refresh'];
+var badges = ['ten','ace','admin','top','par','bottom','record','god','bomb','noscore','blocked','falling','rising','staying','returning'];
 
 function authenticate(req, res, next) {
   if(req.path == '/login') return next();
@@ -26,7 +26,7 @@ function authenticate(req, res, next) {
       record.getRecords(function(err, records) {
         if(err) return next(err);
         if(user.viewedNotice) records['notice'] = null;
-        calculateBadges(user, records['courseRecord']);
+        calculateDynamicBadges(user, records['courseRecord']);
         user.lastLogin = new Date();
         user.viewedNotice = true;
         user.save(function(err) {
@@ -40,7 +40,7 @@ function authenticate(req, res, next) {
   });
 }
 
-function calculateBadges(user, courseRecord) {
+function calculateDynamicBadges(user, courseRecord) {
   if(user.isAdmin) user.badges.admin = 1;
   user.badges.record = (courseRecord!==undefined && Math.min.apply(null, user.history)<=courseRecord) ? 1 : 0;
   user.badges.ten = Math.floor(user.history.length/10);
@@ -88,7 +88,7 @@ function resetViewedNotice(callback) {
 
 function playersByDivision(sort, courseRecord, callback) {
   if(sort!=='position' && sort!=='score') return callback({status: 400, message: 'Must sort by position or score.'});
-  User.find({}, 'name division position score badges isAdmin history', function(err, users) {
+  User.find({}, 'name division position score badges isAdmin history divisionHistory', function(err, users) {
     if(err) return callback({status: 500, message: 'Unable to access database.'});
     users.sort(function(a, b) {
       if(a[sort]===null && b[sort]===null) return a.position - b.position;
@@ -97,7 +97,7 @@ function playersByDivision(sort, courseRecord, callback) {
       else return a[sort] - b[sort];
     });
     users.forEach(function(user) {
-      calculateBadges(user, courseRecord);
+      calculateDynamicBadges(user, courseRecord);
     });
     var players = groupArray(users, 'division');
     callback(null, players);
@@ -118,16 +118,14 @@ function place(date, courseRecord, callback) {
       if(players[nextDivision] === undefined) return;
       var challenger = players[nextDivision][0];
 
-      if(challenger.score==player.score) player.badges.blocked++;
-      
+      if(challenger.score === player.score) challenger.badges.blocked++;
+
       if((challenger.score!==null && player.score===null) || challenger.score<player.score){
         players[division].pop();
         players[nextDivision].splice(0, 1);
         players[division].push(challenger);
         players[nextDivision].unshift(player);
       }
-      
-      
     });
 
     // Reset scores, save players
@@ -136,10 +134,10 @@ function place(date, courseRecord, callback) {
       var divisionIndex = Number(division);
       players[division].forEach(function(player, playerIndex) {
         player.division = divisionIndex;
-        user.divHistory.push(divisionIndex);
+        player.divisionHistory.push(divisionIndex);
         player.position = divisionBasePosition+playerIndex;
         if(player.score!==null && player.score===worstScore) player.badges.bomb++;
-        if(player.score==null) player.badges.noscore++;
+        if(player.score === null) player.badges.noscore++;
         if(divisionIndex === 0){
           player.badges.god++;
         }else if(divisionIndex===1 && playerIndex===0){
@@ -147,20 +145,24 @@ function place(date, courseRecord, callback) {
         }else if(divisionIndex===divisions.length-1 && playerIndex===players[division].length-1){
           player.badges.bottom++;
         }
-        
-        var divLength = divHistory.length;
-        if(divLength < 3){
-          return;
-        }else if(user.divHistory[divLength-3] == user.divHistory[divLength-2] && user.divHistory[divLength-2] == user.divHistory[divLength.length-1]){
-          player.badges.anchor++;
-        }else if(user.divHistory[divLength-3] > user.divHistory[divLength-2] && user.divHistory[divLength-2] > user.divHistory[divLength.length-1]){
-          player.badges.flame++;
-        }else if(user.divHistory[divLength-3] < user.divHistory[divLength-2] && user.divHistory[divLength-2] < user.divHistory[divLength.length-1]){
-          player.badges.thumbdown++;
-        }else if(user.divHistory[divLength-3] == user.divHistory[divLength-1]){
-          player.badges.refresh++;
+
+        if(player.divisionHistory.length >= 3){
+          var divisonMovement = [];
+          player.divisionHistory.slice(-3).reduce(function(a, b) {divisonMovement.push(b-a); return b;});
+          var divisonMovementSum = divisonMovement.reduce(function(a, b) {return a+b;});
+          switch(divisonMovementSum){
+            case 0:
+              divisonMovement[0]===0 ? player.badges.staying++ : player.badges.returning++;
+              break;
+            case -2:
+              player.badges.rising++;
+              break;
+            case 2:
+              player.badges.falling++;
+              break;
+          }
         }
-          
+
         player.score = null;
         player.hasPosted = false;
         player.save(function(err) {

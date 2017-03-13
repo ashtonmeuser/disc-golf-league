@@ -188,12 +188,10 @@ span.no-badges {
 .i-bottom{background: url('/img/i-bottom.svg'); background-size: contain; background-repeat: no-repeat;}
 .i-noscore{background: url('/img/i-noscore.svg'); background-size: contain; background-repeat: no-repeat;}
 .i-blocked{background: url('/img/i-blocked.svg'); background-size: contain; background-repeat: no-repeat;}
-.i-thumbdown{background: url('/img/i-thumbdown.svg'); background-size: contain; background-repeat: no-repeat;}
-.i-anchor{background: url('/img/i-anchor.svg'); background-size: contain; background-repeat: no-repeat;}
-.i-flame{background: url('/img/i-flame.svg'); background-size: contain; background-repeat: no-repeat;}
-.i-refresh{background: url('/img/i-refresh.svg'); background-size: contain; background-repeat: no-repeat;}
-
-
+.i-falling{background: url('/img/i-falling.svg'); background-size: contain; background-repeat: no-repeat;}
+.i-staying{background: url('/img/i-staying.svg'); background-size: contain; background-repeat: no-repeat;}
+.i-rising{background: url('/img/i-rising.svg'); background-size: contain; background-repeat: no-repeat;}
+.i-returning{background: url('/img/i-returning.svg'); background-size: contain; background-repeat: no-repeat;}
 /* End badges */
 
 /* Input */
