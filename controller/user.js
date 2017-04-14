@@ -3,7 +3,7 @@ var groupArray = require('group-array');
 var User = require('../model/user');
 var record = require('./record');
 
-var divisions = ['Non Mortal','Gold','Silver','Bronze','Unranked'];
+var divisions = ['Non Mortal','Gold','Silver','Bronze','Potato','Unranked'];
 var badges = ['ten','ace','admin','top','par','bottom','record','god','bomb','noscore','blocked','falling','rising','staying','returning'];
 
 function authenticate(req, res, next) {

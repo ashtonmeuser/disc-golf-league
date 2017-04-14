@@ -5,7 +5,7 @@ module.exports = mongoose.model('User', new Schema({
   hasPosted: {type: Boolean, required: true, default: false},
   isAdmin: {type: Boolean, required: true, default: false},
   score: {type: Number, default: null},
-  division: {type: Number, min: 0, max: 4, required: true, default: 4},
+  division: {type: Number, min: 0, max: 5, required: true, default: 5},
   position: {type: Number, default: null},
   secret: {type: String, required: true},
   viewedNotice: {type: Boolean, default: false},
