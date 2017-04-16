@@ -66,7 +66,7 @@ function setNotice(message, callback) {
   if(message==='') return callback({status: 400, message: 'Invalid message.'});
   message = sanitizeHtml(message.substring(0, 500), {allowedTags: [], allowedAttributes: []});
   message = message.trim().replace(/(?:\r\n|\r|\n)/g, '</p><p>');
-  message = '<p>'+message+'</p>'
+  message = '<p>'+message+'</p>';
   Record.findOneAndUpdate(
     {key: 'notice'},
     {value: message},

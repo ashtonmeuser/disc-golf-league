@@ -1,7 +1,12 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global.PullToRefresh = factory());
+  if(typeof exports === 'object' && typeof module !== 'undefined')
+    module.exports = factory();
+  else {
+    if(typeof define === 'function' && define.amd)
+      define(factory);
+    else
+      (global.PullToRefresh = factory());
+  }
 }(this, (function () {
 
 var _ptrMarkup = function(){return "<div class=\"__PREFIX__box\">\n  <div class=\"__PREFIX__content\">\n    <div class=\"__PREFIX__icon\"></div>\n    <div class=\"__PREFIX__text\"></div>\n  </div>\n</div>";};
@@ -148,8 +153,7 @@ function _setupEvents() {
 
       ptrElement.style[cssProp] = distResisted + "px";
 
-      distResisted = resistanceFunction(dist / distThreshold)
-        * Math.min(distMax, dist);
+      distResisted = resistanceFunction(dist / distThreshold) * Math.min(distMax, dist);
 
       if (_state === 'pulling' && distResisted > distThreshold) {
         ptrElement.classList.add((classPrefix + "release"));

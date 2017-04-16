@@ -25,8 +25,8 @@ function authenticate(req, res, next) {
     }else{
       record.getRecords(function(err, records) {
         if(err) return next(err);
-        if(user.viewedNotice) records['notice'] = null;
-        calculateDynamicBadges(user, records['courseRecord']);
+        if(user.viewedNotice) records.notice = null;
+        calculateDynamicBadges(user, records.courseRecord);
         user.lastLogin = new Date();
         user.viewedNotice = true;
         user.save(function(err) {
@@ -157,7 +157,10 @@ function place(date, courseRecord, callback) {
           var divisonMovementSum = divisonMovement.reduce(function(a, b) {return a+b;});
           switch(divisonMovementSum){
             case 0:
-              divisonMovement[0]===0 ? player.badges.staying++ : player.badges.returning++;
+              if(divisonMovement[0]===0)
+                player.badges.staying++;
+              else
+                player.badges.returning++;
               break;
             case -2:
               player.badges.rising++;
@@ -193,4 +196,4 @@ module.exports = {
   post,
   place,
   resetViewedNotice
-}
+};
