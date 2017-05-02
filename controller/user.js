@@ -154,20 +154,18 @@ function place(date, courseRecord, callback) {
         if(player.divisionHistory.length >= 3){
           var divisonMovement = [];
           player.divisionHistory.slice(-3).reduce(function(a, b) {divisonMovement.push(b-a); return b;});
-          var divisonMovementSum = divisonMovement.reduce(function(a, b) {return a+b;});
-          switch(divisonMovementSum){
-            case 0:
-              if(divisonMovement[0]===0)
-                player.badges.staying++;
-              else
-                player.badges.returning++;
-              break;
-            case -2:
-              player.badges.rising++;
-              break;
-            case 2:
+          if(divisonMovement[0] > 0){
+            if(divisonMovement[1] > 0)
               player.badges.falling++;
-              break;
+            else if(divisonMovement[0] === divisonMovement[1]*-1)
+              player.badges.returning++;
+          }else if(divisonMovement[0] < 0){
+            if(divisonMovement[1] < 0)
+              player.badges.rising++;
+            else if(divisonMovement[0] === divisonMovement[1]*-1)
+              player.badges.returning++;
+          }else if(divisonMovement[0]===0 && divisonMovement[1]===0){
+              player.badges.staying++;
           }
         }
 
