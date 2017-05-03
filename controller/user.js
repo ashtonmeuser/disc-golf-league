@@ -91,14 +91,14 @@ function playersByDivision(sort, courseRecord, callback) {
   User.find({}, 'name division position score badges isAdmin history divisionHistory', function(err, users) {
     if(err) return callback({status: 500, message: 'Unable to access database.'});
     users.sort(function(a, b) {
-      if(a[sort]===null && b[sort]===null){
-        if(a.position===null && b.position===null) return 0;
-        else if(a.position===null) return 1;
-        else if(b.position===null) return -1;
+      if(a[sort] === b[sort]){
+        if(a.position === b.position) return 0;
+        else if(a.position === null) return 1;
+        else if(b.position === null) return -1;
         else return a.position - b.position;
       }
-      else if(a[sort]===null) return 1;
-      else if(b[sort]===null) return -1;
+      else if(a[sort] === null) return 1;
+      else if(b[sort] === null) return -1;
       else return a[sort] - b[sort];
     });
     users.forEach(function(user) {
